@@ -1,5 +1,8 @@
+//some of these are overrode by calling the functions with different parameters, these are defaults if not specified.
+//in the main assembly/"rack parts" files, some of these get overridden by assignments there. this is deliberate as below is defaults if that other file isn't found.
+
 hole_clearance = 0.3; //mm clearance around the 'oles
-rack_width = 330;
+rack_width = 330; //maybe leave this alone
 post_width = 15.875; // standard post width for rack.
 u_height = 44.5; // 1U in mm for post
 v_post_height = 3; //this is in standard 1U units, not mm.
@@ -16,7 +19,6 @@ nut_thickness = 5.0 + hole_clearance; //5mm for m6
 post_slide_width = 3.0; //this is the width of the cutout for the trays to slide into.
 post_slide_cutout = 3.2; //this is the height of the cutout for the trays to slide into
 
-post_sliders = 1; //1= add sliders, 0 = no sliders.
 
 post_cone_base_diameter = 10.0;
 post_cone_top_diameter = 4.0;
@@ -39,50 +41,6 @@ footer_width = 1; //this is in POST WIDTHS, not mm.
 
 // the next 2 lines are used by my version script which is called by 'run on save'
 // AUTO-V
-version = "v0.1-2026/05/03r240";
+version = "v0.1-2026/05/03r246";
 
 
-module holes(holes = 2) {
-    translate([post_width/2, ((post_width)-post_width/2 ), hole_offset_z/2]) {
-        rotate([90,0,0]) {
-            cylinder(d=hole_d, h=post_width, center=true, $fn=32);
-        }
-    }
-
-    if (holes == 3 ) {
-        translate([post_width/2, ((post_width)-post_width/2 ), (hole_offset_z/2) + hole_spacing]) {
-            rotate([90,0,0]) {
-                cylinder(d=hole_d, h=post_width, center=true, $fn=32);
-            }
-        }
-    }
-
-    translate([post_width/2, ((post_width)-post_width/2 ), (hole_offset_z/2)+ (hole_spacing*2)]) {
-        rotate([90,0,0]) {
-            cylinder(d=hole_d, h=post_width, center=true, $fn=32);
-        }
-    }
-}
-
-
-module nut_holes(holes = 2) {
-
-        translate([post_width/2, ((post_width)-nut_thickness/2 ), hole_offset_z/2]) {
-            rotate([90,0,0]) {
-                cylinder(d=nut_diameter_point, h=nut_thickness, center=true, $fn=6);
-            }
-        }
-
-        translate([post_width/2, ((post_width)-nut_thickness/2 ), (hole_offset_z/2) + hole_spacing]) {
-            rotate([90,0,0]) {
-                cylinder(d=nut_diameter_point, h=nut_thickness, center=true, $fn=6);
-            }
-        }
-
-        translate([post_width/2, ((post_width)-nut_thickness/2 ), (hole_offset_z/2)+ (hole_spacing*2)]) {
-            rotate([90,0,0]) {
-                cylinder(d=nut_diameter_point, h=nut_thickness, center=true, $fn=6);
-            }
-        }
-
-}

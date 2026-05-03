@@ -1,5 +1,5 @@
 include <330mm rack defines.scad>;
-
+include <330mm rack posts.scad>;
 
 module blank_1U_front_panel(holes = front_panel_hole_count) {
     difference() {
@@ -87,9 +87,9 @@ module side_slide(count = 3, side = 0) {
 
 
 
-module blank_1U_tray(side_count = 3) {
+module blank_1U_tray(side_count = 3, edge_radius = 2, holes = front_panel_hole_count) {
     //use this as a primitive to make trays.
-    blank_1U_front_panel();
+    blank_1U_front_panel(holes);
     translate([post_width+tray_post_clearance+post_slide_width, 0, front_panel_undersizing]) {
         cube([((rack_width - (post_width*2)) - (tray_post_clearance*2)-(post_slide_width*2)), rack_width+front_panel_thickness, tray_thickness]);
     }

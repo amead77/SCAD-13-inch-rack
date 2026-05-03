@@ -70,22 +70,22 @@ module rail_1u_holes_segment(slide_side, doublewide = 0) {
 }
 
 
-module rail_1u_holes(slide_side, doublewide = 0) {
+module rail_1u_holes(slide_side, doublewide = 0, post_height = v_post_height, v_post_cones = post_cones) {
     difference()  {
         union() {
-            for (z = [0:v_post_height-1]) {
+            for (z = [0:post_height-1]) {
                 translate([0,0,z*u_height]) {
                     rail_1u_holes_segment(slide_side, doublewide);
                 }
             }
-            if (post_cones == 1) { //top cones for joining rails
-                translate([post_width/2, post_width/2, u_height * v_post_height]) {
+            if (v_post_cones == 1) { //top cones for joining rails
+                translate([post_width/2, post_width/2, u_height * post_height]) {
                     rotate([0,0,0]) {
                         cylinder(h=post_cone_height, r1=(post_cone_base_diameter/2)-post_top_cone_clearance, r2=(post_cone_top_diameter/2)-post_top_cone_clearance, center=false, $fn=32);
                     }
                 }
                 if (doublewide == 1) {
-                    translate([post_width + post_width/2, post_width/2, u_height * v_post_height]) {
+                    translate([post_width + post_width/2, post_width/2, u_height * post_height]) {
                         rotate([0,0,0]) {
                             cylinder(h=post_cone_height, r1=(post_cone_base_diameter/2)-post_top_cone_clearance, r2=(post_cone_top_diameter/2)-post_top_cone_clearance, center=false, $fn=32);
                         }
@@ -94,7 +94,7 @@ module rail_1u_holes(slide_side, doublewide = 0) {
 
             }
         }
-        if (post_cones == 1) { //bottom cones
+        if (v_post_cones == 1) { //bottom cones
             translate([post_width/2, post_width/2, 0]) {
                 cylinder(h=post_cone_height-post_top_cone_clearance, r1=(post_cone_base_diameter/2), r2=(post_cone_top_diameter/2), center=false, $fn=32);
             }
@@ -106,4 +106,49 @@ module rail_1u_holes(slide_side, doublewide = 0) {
         }
 
     }
+}
+
+module holes(holes = 2) {
+    translate([post_width/2, ((post_width)-post_width/2 ), hole_offset_z/2]) {
+        rotate([90,0,0]) {
+            cylinder(d=hole_d, h=post_width, center=true, $fn=32);
+        }
+    }
+
+    if (holes == 3 ) {
+        translate([post_width/2, ((post_width)-post_width/2 ), (hole_offset_z/2) + hole_spacing]) {
+            rotate([90,0,0]) {
+                cylinder(d=hole_d, h=post_width, center=true, $fn=32);
+            }
+        }
+    }
+
+    translate([post_width/2, ((post_width)-post_width/2 ), (hole_offset_z/2)+ (hole_spacing*2)]) {
+        rotate([90,0,0]) {
+            cylinder(d=hole_d, h=post_width, center=true, $fn=32);
+        }
+    }
+}
+
+
+module nut_holes(holes = 2) {
+
+        translate([post_width/2, ((post_width)-nut_thickness/2 ), hole_offset_z/2]) {
+            rotate([90,0,0]) {
+                cylinder(d=nut_diameter_point, h=nut_thickness, center=true, $fn=6);
+            }
+        }
+
+        translate([post_width/2, ((post_width)-nut_thickness/2 ), (hole_offset_z/2) + hole_spacing]) {
+            rotate([90,0,0]) {
+                cylinder(d=nut_diameter_point, h=nut_thickness, center=true, $fn=6);
+            }
+        }
+
+        translate([post_width/2, ((post_width)-nut_thickness/2 ), (hole_offset_z/2)+ (hole_spacing*2)]) {
+            rotate([90,0,0]) {
+                cylinder(d=nut_diameter_point, h=nut_thickness, center=true, $fn=6);
+            }
+        }
+
 }

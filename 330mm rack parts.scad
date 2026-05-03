@@ -45,7 +45,10 @@ tray_side_thickness = 2.0;
 tray_slide_thickness = post_slide_cutout - hole_clearance;
 // the next 2 lines are used by my version script which is called by 'run on save'
 // AUTO-V
-version = "v0.1-2026/05/03r217";
+version = "v0.1-2026/05/03r237";
+
+include <330mm rack posts.scad>;
+include <330mm rack tray.scad>;
 
 module post(slide_side = 0, doublewide = 0) {
     union() {
@@ -299,19 +302,19 @@ module blank_1U_tray(side_count = 3) {
 module assembly() {
 // this is used to render/see all the bits together, as an example.
     render() {
-        rail_1u_holes(0);
-        
+        rail_1u_holes(slide_side = 1, doublewide = 0);
+
         translate([rack_width - post_width, 0, 0]) {
             rail_1u_holes(slide_side = 1, doublewide = 1);
         }
         
         translate([post_width, rack_width, 0]) {        
             rotate([0,0,180]) {
-                rail_1u_holes(1);
+                rail_1u_holes(1, 0);
             }
             translate([rack_width - post_width, 0, 0]) {
                 rotate([0,0,180]) {
-                    rail_1u_holes(0);
+                    rail_1u_holes(1, 1);
                 }
             }
         }

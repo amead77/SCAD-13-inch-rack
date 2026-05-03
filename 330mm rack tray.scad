@@ -2,7 +2,7 @@ include <330mm rack defines.scad>;
 include <330mm rack posts.scad>;
 
 // AUTO-V
-version = "v0.1-2026/05/04r00";
+version = "v0.1-2026/05/04r03";
 
 module blank_1U_front_panel(holes = front_panel_hole_count) {
     difference() {
@@ -572,8 +572,14 @@ module blank_variable_tray(
     import_mode = "emboss",
     side_support = 1,
     side_support_back = 40,
-    side_support_thickness = tray_side_thickness
+    side_support_thickness = tray_side_thickness,
+    back_panel = 0,
+    back_panel_thickness = tray_side_thickness
 ) {
+    tray_height = max((u_height * tray_u_size) - 1, post_slide_cutout-hole_clearance);
+    tray_x0 = post_width + tray_post_clearance + post_slide_width;
+    tray_w = (rack_width - (post_width*2)) - (tray_post_clearance*2) - (post_slide_width*2);
+
     blank_variable_front_panel(
         panel_u_size,
         holes,
@@ -586,11 +592,18 @@ module blank_variable_tray(
         import_offset_z,
         import_mode
     );
-    translate([post_width+tray_post_clearance+post_slide_width, 0, front_panel_undersizing]) {
-        cube([((rack_width - (post_width*2)) - (tray_post_clearance*2)-(post_slide_width*2)), rack_width+front_panel_thickness, tray_thickness]);
+    translate([tray_x0, 0, front_panel_undersizing]) {
+        cube([tray_w, rack_width+front_panel_thickness, tray_thickness]);
     }
     side_slide_variable(tray_u_size, side = 0);
     side_slide_variable(tray_u_size, side = 1);
+
+    if (back_panel == 1) {
+        // Rear wall to connect side panels, matching tray side height.
+        translate([tray_x0, front_panel_thickness + rack_width - back_panel_thickness, 0]) {
+            cube([tray_w, back_panel_thickness, tray_height]);
+        }
+    }
 
     if (side_support == 1) {
         variable_tray_front_gusset(panel_u_size, tray_u_size, side = 0, support_back = side_support_back, support_thickness = side_support_thickness);

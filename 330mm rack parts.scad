@@ -10,7 +10,7 @@
 // This is 330mm from the left edge of the left post, to the right edge of the right post, assuming single posts.
 
 // AUTO-V
-version = "v0.1-2026/05/04r00";
+version = "v0.1-2026/05/04r06";
 
 
 include <330mm rack posts.scad>;
@@ -41,9 +41,9 @@ front_panel_thickness = 3.0;
 front_panel_hole_count = 2; //this is per side. 2 or 3 or 4 or 6.
 
 //these are the basic setup for the trays, the trays also use the defines from the front panel.
-tray_thickness = 3.0; // this is not affected by post_slide_cutout, as it sits inside
+tray_thickness = 5.0; // this is not affected by post_slide_cutout, as it sits inside
 tray_post_clearance = 0.5; //clearance between trays and posts. added to BOTH sides.
-tray_side_thickness = 2.0;
+tray_side_thickness = 2.5;
 tray_slide_thickness = post_slide_cutout - hole_clearance;
 tray_side_height = 2; //this is in hole spacing, 1 = 1 hole up, 2 = 2 holes up etc.
 

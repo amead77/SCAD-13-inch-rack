@@ -1,7 +1,7 @@
 include <330mm rack tray.scad>;
 
 // AUTO-V
-version = "v0.1-2026/05/04r00";
+version = "v0.1-2026/05/04r09";
 
 
 module rpi5_io_cutout_left(
@@ -63,7 +63,7 @@ module custom_tray_01() {
     difference() {
         blank_variable_tray(
             panel_u_size = 1,
-            tray_u_size = 0.5,
+            tray_u_size = 0.75,
             holes = 2,
             import_file = "raspberry-pi.svg",
             import_type = "svg",
@@ -73,12 +73,13 @@ module custom_tray_01() {
             import_offset_x = 140,
             import_offset_z = 0,
             import_mode = "emboss",
-            side_support = 1
+            side_support = 1,
+            back_panel = 1
         );
 
         rpi5_io_cutout_left(
             cutout_x = post_width + 26,
-            cutout_z = 10,
+            cutout_z = 8+tray_thickness,
             cutout_w = 56,
             cutout_h = 18,
             clearance = 0.6
@@ -102,7 +103,7 @@ module custom_tray_01() {
         translate([40, 33, 7]) { // move the model so the mounting holes are at the origin, for easier positioning
             rotate([90, 0, 270]) {
                 color("blue") {
-                    import("RASPBERRY_PI_5_WITH_ACTIVE_COOLER.stl", convexity = 10);
+                    import("raspberry_pi_5_with_active_cooler.stl", convexity = 10);
                 }
              }
         }   

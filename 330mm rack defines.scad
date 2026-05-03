@@ -30,7 +30,7 @@ front_panel_thickness = 3.0;
 front_panel_undersizing = 0.1; // this is how many mm to undersize the front panel, for better fitting. it affects x and z and is applied to both edges, not just one
 front_panel_edge_radius = 2.0; // this is the radius of the rounded edges on the front panel. Set to 0 for square edges.
 front_panel_hole_count = 2; //this is per side. 2 or 3.
-tray_thickness = 3.0; // this is not affected by post_slide_cutout, as it sits inside
+tray_thickness = 5.0; // this is not affected by post_slide_cutout, as it sits inside
 tray_post_clearance = 0.5; //clearance between trays and posts. added to BOTH sides.
 tray_side_thickness = 2.0;
 tray_slide_thickness = post_slide_cutout - hole_clearance;
@@ -51,6 +51,6 @@ beam_thickness = 4; //this is used internally
 
 // the next 2 lines are used by my version script which is called by 'run on save'
 // AUTO-V
-version = "v0.1-2026/05/04r00";
+version = "v0.1-2026/05/04r04";
 
 

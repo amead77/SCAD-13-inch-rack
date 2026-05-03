@@ -29,13 +29,17 @@ post_slide_cutout = 3.2; //this is the height of the cutout for the trays to sli
 
 post_sliders = 1; //1= add sliders, 0 = no sliders.
 
-front_panel_thickness = 2.0;
+front_panel_thickness = 3.0;
 front_panel_undersizing = 0.1; // this is how many mm to undersize the front panel, for better fitting. it affects x and z and is applied to both edges, not just one
 front_panel_edge_radius = 0.0; // this is the radius of the rounded edges on the front panel. Set to 0 for square edges.
 
+tray_thickness = 3.0; // this is not affected by post_slide_cutout, as it sits inside
+tray_post_clearance = 0.5; //clearance between trays and posts. added to BOTH sides.
+tray_side_thickness = 2.0;
+tray_slide_thickness = post_slide_cutout - hole_clearance;
 // the next 2 lines are used by my version script which is called by 'run on save'
 // AUTO-V
-version = "v0.1-2026/05/03r24";
+version = "v0.1-2026/05/03r78";
 
 module post(slide_side) {
     cube([post_width, post_width, u_height]);
@@ -60,7 +64,6 @@ module post_slides() {
         translate([0, 0, (hole_offset_z/2)-(post_slide_cutout/2)+ hole_spacing * 2]) {
             cube([post_slide_cutout, post_width, post_slide_cutout]);
         }
-
     }
 }
 
@@ -97,7 +100,6 @@ module holes(holes = 2) {
             cylinder(d=hole_d, h=post_width, center=true, $fn=32);
         }
     }
-
 }
 
 module rail_1u_holes_segment(slide_side) {
@@ -126,44 +128,17 @@ module rail_1u_holes_segment(slide_side) {
     }
 }
 
+
 module rail_1u_holes(slide_side) {
     for (z = [0:v_post_height-1]) {
         translate([0,0,z*u_height]) {
             rail_1u_holes_segment(slide_side);
-
         }
-    }
-}
-
-module assembly() {
-    render() {
-        rail_1u_holes(0);
-        
-        translate([rack_width - post_width, 0, 0]) {
-            rail_1u_holes(1);
-        }
-        
-        translate([post_width, rack_width, 0]) {        
-            rotate([0,0,180]) {
-                rail_1u_holes(1);
-            }
-            translate([rack_width - post_width, 0, 0]) {
-                rotate([0,0,180]) {
-                    rail_1u_holes(0);
-                }
-            }
-        }
-
-        translate([0,-3, 0]) {
-            blank_1U_front_panel(holes = 3);
-        }
-
     }
 }
 
 
 module blank_1U_front_panel(holes = 2) {
-
     difference() {
         if (front_panel_edge_radius > 0) {
             minkowski() {
@@ -183,10 +158,73 @@ module blank_1U_front_panel(holes = 2) {
             holes(holes);
         }
     }
-
-
-
-
 }
 
+module side_slide(count = 3, side = 0) {
+
+    if (side == 0) {
+        translate([post_width+post_slide_width+tray_post_clearance, 0, 0]) {
+            cube([tray_side_thickness, rack_width, u_height]);
+        }
+        translate([post_width+tray_post_clearance, 0, (hole_offset_z/2)-(post_slide_cutout/2.1)]) {
+            cube([post_slide_width, rack_width, post_slide_cutout-hole_clearance]);
+        }
+        if (count > 1) {
+            translate([post_width+tray_post_clearance, 0, (hole_offset_z/2)-(post_slide_cutout/2.1)+ hole_spacing]) {
+                cube([post_slide_width, rack_width, post_slide_cutout-hole_clearance]);
+            }
+        }
+        if (count > 2) {
+            translate([post_width+tray_post_clearance, 0, (hole_offset_z/2)-(post_slide_cutout/2.1)+ hole_spacing * 2]) {
+                cube([post_slide_width, rack_width, post_slide_cutout-hole_clearance]);
+            }
+        }
+    } else {
+
+
+
+    }
+}
+
+module tray_left_slide() {
+        rear_slide(count = 3, side = 0);
+    }
+
+
+module blank_1U_tray() {
+    blank_1U_front_panel();
+    translate([post_width+tray_post_clearance+post_slide_width, 0, front_panel_undersizing]) {
+        cube([((rack_width - (post_width*2)) - (tray_post_clearance*2)-(post_slide_width*2)), rack_width, tray_thickness]);
+    }
+    side_slide(count = 3);
+}
+
+
+module assembly() {
+// this is used to render/see all the bits together, as an example.
+    render() {
+        rail_1u_holes(0);
+        
+        translate([rack_width - post_width, 0, 0]) {
+            rail_1u_holes(1);
+        }
+        
+        translate([post_width, rack_width, 0]) {        
+            rotate([0,0,180]) {
+                rail_1u_holes(1);
+            }
+            translate([rack_width - post_width, 0, 0]) {
+                rotate([0,0,180]) {
+                    rail_1u_holes(0);
+                }
+            }
+        }
+
+        translate([0,-5, 0]) {
+        //    blank_1U_front_panel(holes = 3);
+        //}
+            blank_1U_tray();
+        }
+    }
+}
 assembly();

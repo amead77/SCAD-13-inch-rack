@@ -38,7 +38,7 @@ Trays are available in fixed sizes (1U, 2U) or a fully variable size. The variab
 
 
 
-![Part Tray](tray-part_depth.png)
+![Part Tray](tray-part_depth_y.png)
 
 
 ### Panels (Blanking Panels)

@@ -1,4 +1,4 @@
-AI wrote most of this readme, because I am a forklift operator, not a novelist. But I did write most of the code and the spec.
+Most of this readme was wrote by copilot, because I am a forklift operator, not a novelist. But I did write most of the code and the spec.
 
 If you like the design, you're welcome to buy me a coffee:
 

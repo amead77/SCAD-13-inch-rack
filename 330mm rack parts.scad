@@ -8,9 +8,17 @@
 // (c) 2026 Adam Mead.
 // 
 // This is 330mm from the left edge of the left post, to the right edge of the right post, assuming single posts.
+//
+// The parts...
+// Posts. These are in 1U segments. They can be single or double wide. They can also have a slide on one or both sides, for guiding and supporting trays.
+// Trays. These are available in 1U, 2U and a variable size. The 1U and 2U ones I created initially to test, the variable one can also have a rear back panel, making it a drawer.
+// Panels. These are blanking panels, but the design is also used by the trays.
+// Footer/Header. These are added to the post to allow joining the front/rear posts together using the joiner. (optional)
+// Joiners. The attach to the footer/header and span the gap between front and rear posts. (optional)
+//
 
 // AUTO-V
-version = "v0.1-2026/05/04r06";
+version = "v0.1-2026/05/04r32";
 
 
 include <330mm rack posts.scad>;
@@ -18,43 +26,69 @@ include <330mm rack tray.scad>;
 include <330mm rack defines.scad>; //some of these are overrode below.
 include <330mm rack custom tray 01.scad>;
 
-part = 0; // 0 = assembly, 1 = posts, 2 = trays, 3 = feet, 4 = base joiner, 5 = top joiner, 6 = 2U tray
+// Chose the part to make, or assembly to see all
+part = "assembly"; // [assembly, post, base joiner, top joiner, 1U tray, 2U tray, variable tray, halfUpanel, 1U panel, 2U panel, variable panel]
 
 
 
 
 
-// these are the basic setup for the posts.
-post_u_height = 6; //how many U high
-post_doublewide = 1; // 1 for double wide, 0 for single wide. This is used by the post module, and the rail_1u_holes_segment module, which calls the post module. The post module is used by the assembly module, which is what is rendered when part = 0. So changing this will change the posts in the assembly render, but not if you render just the posts by setting part = 1.
 
-slide_side = 0; //0 = none, 1 = left, 2 = right, 3 = both.
+// ** these are the basic setup for the posts.
+
+//how many U high
+post_u_height = 6; 
+
+// 1 for double wide, 0 for single wide.
+post_doublewide = 0; // [0, 1]
+
+//0 = none, 1 = left, 2 = right, 3 = both.
+slide_side = 0; 
+
+
 cones = 1; //this is for joining rails
+// set to 0 to not include the footer, 1 to include it. The footer is a small piece at the bottom of the rack
+footer_include = 1; 
+// if you include the header and or footer, this adds a single extra piece to top and bottom of the posts, which is for the joiner to attach to
+header_include = 1; 
+
 hole_clearance = 0.3; //mm clearance around the 'oles
 hole_d = 6.0 + hole_clearance; //screw holes dia
 nut_diameter = 10.0 + hole_clearance; //10mm for m6
 nut_thickness = 6.0 + hole_clearance; //5mm for m6
 
-//these are the basic setup for the front panel.
+
+// ** these are the basic setup for the front panel.
+
 front_panel_edge_radius = 2.0;
 front_panel_thickness = 3.0;
 front_panel_hole_count = 2; //this is per side. 2 or 3 or 4 or 6.
+front_panel_height = 1.5; // in U. 1 = 1U high, 2 = 2U high etc.
 
-//these are the basic setup for the trays, the trays also use the defines from the front panel.
+// ** these are the basic setup for the trays, the trays also use the defines from the front panel.
+
 tray_thickness = 5.0; // this is not affected by post_slide_cutout, as it sits inside
-tray_post_clearance = 0.5; //clearance between trays and posts. added to BOTH sides.
+
+//clearance between trays and posts. added to BOTH sides.
+tray_post_clearance = 0.5; 
+// thickness of the side of the tray
 tray_side_thickness = 2.5;
 tray_slide_thickness = post_slide_cutout - hole_clearance;
-tray_side_height = 2; //this is in hole spacing, 1 = 1 hole up, 2 = 2 holes up etc.
 
-tray_slide_out = 60; //this is just for the assembly demo.
+//this is in hole spacing, 1 = 1 hole up, 2 = 2 holes up etc.
+tray_side_height = 1.25; 
 
-footer_include = 1; // set to 0 to not include the footer, 1 to include it. The footer is a small piece at the bottom of the rack
-header_include = 1;
+// set to 0 for no rear panel, 1 for a rear panel. this creates a drawer
+tray_back_panel = 0;
+
+//this is just for the assembly demo.
+tray_slide_out = 60; 
+
 base_join = 1;
 top_join = 1;
 base_panel = 1; //a blanking panel and reinforcement. 0.5U high
 top_panel = 1; //a blanking panel and reinforcement. 0.5U high
+
 
 module assembly() {
 // this is used to render/see all the bits together, as an example.
@@ -209,29 +243,18 @@ module assembly() {
     }
 }
 
-
-if (part == 0) {
+// [assembly, post, base joiner, top joiner, 1U tray, 2U tray, variable tray, halfUpanel, 1U panel, 2U panel, variable panel]
+if (part == "assembly") {
     assembly();
 }
 
-if (part == 1) {
+if (part == "post") {
     render() {
         rail_1u_holes(slide_side = slide_side, doublewide = post_doublewide, post_u_height, cones);
     }
 }
 
-if (part == 2) {
-    render() {
-        blank_1U_tray(tray_side_height, front_panel_edge_radius, front_panel_hole_count);
-    }
-} 
-
-if (part == 3) {
-    render() {
-        footer();
-    }
-}
-if (part == 4) {
+if (part == "base joiner") {
     render() {
         if (post_doublewide == 0) {
             base_joiner(doublewide = post_doublewide);
@@ -243,7 +266,7 @@ if (part == 4) {
     }
 }
 
-if (part == 5) {
+if (part == "top joiner") {
     render() {
         if (post_doublewide == 0) {
             base_joiner(doublewide = post_doublewide, bottom = 0);
@@ -255,14 +278,46 @@ if (part == 5) {
     }
 }
 
-if (part == 6) {
+if (part == "1U tray") {
+    render() {
+        blank_1U_tray(tray_side_height, front_panel_edge_radius, front_panel_hole_count);
+    }
+} 
+
+if (part == "2U tray") {
     render() {
         blank_2U_tray(tray_side_height, front_panel_edge_radius, front_panel_hole_count);
     }
 } 
 
-if (part == 7) {
+if (part == "variable tray") {
     render() {
-        blank_variable_tray(2, 0.6, 2);
+        blank_variable_tray(panel_u_size = front_panel_height, tray_u_size = tray_side_height, holes = front_panel_hole_count, back_panel = tray_back_panel);
+    }
+}
+
+
+    
+if (part == "halfUpanel") {
+    color("orange") {
+        blank_05U_front_panel();
+    }
+}
+
+if (part == "1U panel") {
+    color("orange") {
+        blank_1U_front_panel(holes = front_panel_hole_count);
+    }
+}
+
+if (part == "2U panel") {
+    color("orange") {
+        blank_2U_front_panel(holes = front_panel_hole_count);
+    }
+}
+
+if (part == "variable panel") {
+    color("orange") {
+        blank_variable_front_panel(u_size = front_panel_height, holes = front_panel_hole_count);
     }
 }

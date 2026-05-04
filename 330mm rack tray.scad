@@ -2,6 +2,12 @@ include <330mm rack defines.scad>;
 include <330mm rack posts.scad>;
 
 
+/*
+// next 2 lines used only by my 'on save' script. can be ignored otherwise.
+// AUTO-V
+version = "v0.1-2026/05/04r57";
+*/
+
 
 // blank_1U_front_panel(holes)
 // Public — generates a 1U blanking front panel with rounded or square edges.

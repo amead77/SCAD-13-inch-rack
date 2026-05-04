@@ -1,7 +1,10 @@
 include <330mm rack tray.scad>;
 
+/*
+// next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/04r11";
+version = "v0.1-2026/05/04r12";
+*/
 
 
 // rpi5_io_cutout_left(cutout_x, cutout_z, cutout_w, cutout_h, clearance)

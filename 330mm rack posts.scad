@@ -1,5 +1,12 @@
 include <330mm rack defines.scad>;
 
+/*
+// next 2 lines used only by my 'on save' script. can be ignored otherwise.
+// AUTO-V
+version = "v0.1-2026/05/04r57";
+*/
+
+
 
 
 // post(slide_side, doublewide)

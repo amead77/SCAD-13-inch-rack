@@ -10,6 +10,7 @@
 // I designed this specifically to allow the rear of the tray to slide into the post.
 // This is for added support on the rear, and because other designs with front and rear attachment
 // required dismantling the rack to take out a tray with front and rear attachments.
+// Before printing, make some small test pieces to check tolerances etc.
 //
 // (c) 2026 Adam Mead. But go nuts with it. GPLv3
 // 
@@ -28,10 +29,12 @@
 // I was going to up to github, then realised I had only commented a small part, so AI did ~70% of the comments.
 
 
+
+/*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/04r54";
-
+version = "v0.1-2026/05/04r58";
+*/
 
 include <330mm rack posts.scad>;
 include <330mm rack tray.scad>;

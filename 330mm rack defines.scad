@@ -49,6 +49,11 @@ header_top_beam_thickness = 10.0; // the top beam for connecting 2 posts/rails t
 footer_base_beam_thickness = 5.0; // the base beam for connecting 2 posts/rails together, front to rear.
 beam_thickness = 4; //this is used internally, do not adjust.
 
+/*
+// next 2 lines used only by my 'on save' script. can be ignored otherwise.
+// AUTO-V
+version = "v0.1-2026/05/04r57";
+*/
 
 
 

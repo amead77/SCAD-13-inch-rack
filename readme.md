@@ -1,5 +1,9 @@
 AI wrote most of this readme, because I am a forklift operator, not a novelist. But I did write most of the code and the spec.
 
+If you like the design, you're welcome to buy me a coffee:
+
+[![Buy Me a Coffee](bmc-button.png)](https://buymeacoffee.com/amead77)
+
 # 330mm / 13-Inch Rack System (OpenSCAD)
 
 A parametric, 3D-printable rack system designed for larger-format printers such as the Creality K2 Plus, Prusa XL, etc. The rack is 330mm wide — measured from the left edge of the left post to the right edge of the right post (single-post configuration).

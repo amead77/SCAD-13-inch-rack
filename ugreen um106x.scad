@@ -80,17 +80,16 @@ module ug_um106x_tray_fit() {
 }
 
 
-// blank_variable_tray(panel_u_size, tray_u_size, tray_depth_scale, holes, import_file, import_type, import_width, import_height, import_depth, import_offset_x, import_offset_z, import_mode, side_support, side_support_back, tray_side_thickness, front_panel_thickness, side_support_thickness, back_panel, back_panel_thickness, tray_thickness)
-// Public — the main variable-size tray module. Preferred over blank_1U_tray / blank_2U_tray for new designs.
+// blank_variable_tray(panel_u_size, tray_u_size, tray_depth_scale, holes, import_file, import_type, import_width, import_height, import_depth, import_offset_x, import_offset_z, import_mode, side_support, side_support_back, tray_side_thickness, front_panel_thickness, side_support_thickness, back_panel, back_panel_thickness, tray_thickness, rack_width, post_width, hole_d, u_height, hole_offset_z, hole_spacing, front_panel_undersizing, front_panel_edge_radius, tray_post_clearance, post_slide_width, post_slide_cutout, hole_clearance)
+// Public — the main variable-size tray module.
 // panel_u_size: front panel height in U (can be fractional). tray_u_size: side/base height in U (defaults to panel_u_size).
-// tray_depth_scale: tray projection depth as a fraction of full rack depth (1 = full depth, 0.25 = quarter depth).
-// holes: mounting holes per side. back_panel: 0=open tray, 1=add rear wall (makes it a drawer).
+// tray_depth_scale: tray projection depth as a fraction of rack_width (1 = full depth, 0.25 = quarter depth).
+// holes: mounting holes per side (2, 3, 4, or 6). back_panel: 0=open tray, 1=add rear wall (makes a drawer).
 // side_support: 1=add front gussets when panel is taller than side wall.
-// tray_side_thickness: side wall thickness in mm. Default: tray_side_thickness from defines.
-// front_panel_thickness: front panel depth (Y) in mm. Default: front_panel_thickness from defines.
-// tray_thickness: base floor thickness in mm. Default: tray_thickness from defines.
+// All rack dimension parameters have defaults matching the 330mm rack standard.
 // Accepts the same import_* parameters as blank_variable_front_panel() for emboss/engrave graphics.
 // e.g. blank_variable_tray(panel_u_size=1, tray_u_size=0.75, tray_depth_scale=0.5, holes=2, back_panel=1);
+// e.g. blank_variable_tray(panel_u_size=1, tray_u_size=0.5, tray_depth_scale=0.5, holes=4, tray_thickness=4.0, front_panel_thickness=20.0);
 // e.g. blank_variable_tray(panel_u_size=2, tray_u_size=1.5, tray_depth_scale=1, holes=4, import_file="logo.svg", import_type="svg");
 
 

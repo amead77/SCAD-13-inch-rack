@@ -1,4 +1,6 @@
 // dimensions and part for fit testing a U-Green UM106X 5 port 2.5gbe switch.
+include <330mm blank variable tray.scad>;
+
 
 ug_tray_fit_wall_thickness = 4.0;
 

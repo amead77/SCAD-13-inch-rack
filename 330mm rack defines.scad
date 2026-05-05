@@ -53,7 +53,7 @@ beam_thickness = 4; //this is used internally, do not adjust.
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/04r59";
+version = "v0.1-2026/05/05r00";
 */
 
 

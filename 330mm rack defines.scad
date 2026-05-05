@@ -1,3 +1,12 @@
+/*
+
+DEPRECIATED.
+
+use for reference. The default values in the functions are now set to these, and can be overridden when calling the functions.
+
+*/
+
+
 //some of these are overrode by calling the functions with different parameters, these are defaults if not specified.
 //in the main assembly/"rack parts" files, some of these get overridden by assignments there. this is deliberate as below is defaults if that other file isn't found.
 
@@ -53,7 +62,7 @@ beam_thickness = 4; //this is used internally, do not adjust.
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/05r00";
+version = "v0.1-2026/05/05r01";
 */
 
 

@@ -17,6 +17,14 @@
 
 // variable_holes_per_u(holes)
 // Converts a total holes-per-side value into a per-U-segment count (1, 2, or 3).
+
+
+/*
+// next 2 lines used only by my 'on save' script. can be ignored otherwise.
+// AUTO-V
+version = "v0.1-2026/05/05r04";
+*/
+
 function variable_holes_per_u(holes) = (holes >= 6) ? 3 : ((holes >= 4) ? 2 : holes);
 
 

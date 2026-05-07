@@ -15,15 +15,17 @@
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/06r00";
+version = "v0.1-2026/05/07r10";
 */
 
 include <330mm blank variable tray.scad>;
 
-ug_tray_support_oversize = 0.1; // this is how much larger the switch support is than the switch itself.
+ug_tray_support_oversize = 0.5; // this is how much larger the switch support is than the switch itself.
 
-ug_tray_fit_wall_thickness = 4.0;
+ug_tray_fit_wall_thickness = 3.0;
 ug_tray_thickness = 4.0;
+ug_tray_back_panel_height = 2.0;
+
 ug_width = 160.0;
 ug_height = 27.78;
 ug_depth = 105.4;
@@ -59,11 +61,6 @@ ug_tray_cutout_height = ug_height - 4.0;
 ug_tray_cutout_lip = 2.0; //this is based on 4.0mm above.
 ug_tray_front_panel_thickness = 4.0;
 
-//keystone for the tray, for routing cables from switch to stuff in the back.
-
-ks_width = 14.580;
-ks_height = 16.10;
-ks_depth = 30.0;
 
 
 
@@ -136,7 +133,9 @@ module tray_assembly() {
             tray_u_size = 0.6,
             tray_depth_scale = 0.33,
             holes = 4,
-            back_panel = 0,
+            back_panel = 1,
+            back_panel_height = 0.2, //U height
+            side_support_back = ug_tray_back_panel_height,
             tray_thickness = ug_tray_thickness,
             front_panel_thickness = ug_tray_front_panel_thickness,
             side_support = 2

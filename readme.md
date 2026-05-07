@@ -1,4 +1,4 @@
-Most of this readme was wrote by copilot, because I am a forklift operator, not a novelist. But I did write most of the code and the spec.
+Most of this readme was wrote by copilot, because I am a forklift operator, not a novelist. But I did write most of the code (except variable tray, which copilot fixed for me then refactored) and the spec.
 
 If you like the design, you're welcome to buy me a coffee:
 

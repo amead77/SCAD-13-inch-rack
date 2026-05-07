@@ -22,7 +22,7 @@
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/05r04";
+version = "v0.1-2026/05/07r07";
 */
 
 function variable_holes_per_u(holes) = (holes >= 6) ? 3 : ((holes >= 4) ? 2 : holes);
@@ -382,7 +382,7 @@ module blank_variable_front_panel(
 // Public — the main variable-size tray module.
 // panel_u_size: front panel height in U (can be fractional). tray_u_size: side/base height in U (defaults to panel_u_size).
 // tray_depth_scale: tray projection depth as a fraction of rack_width (1 = full depth, 0.25 = quarter depth).
-// holes: mounting holes per side (2, 3, 4, or 6). back_panel: 0=open tray, 1=add rear wall (makes a drawer).
+// holes: mounting holes per side (2, 3, 4, or 6). back_panel: 0=open tray, 1=add rear wall (makes a drawer). back_panel_height: rear wall height in U (defaults to tray_u_size).
 // side_support: 1=add front gussets when panel is taller than side wall.
 // All rack dimension parameters have defaults matching the 330mm rack standard.
 // Accepts the same import_* parameters as blank_variable_front_panel() for emboss/engrave graphics.
@@ -409,6 +409,7 @@ module blank_variable_tray(
     side_support_thickness  = 2.0,
     back_panel              = 0,
     back_panel_thickness    = 2.0,
+    back_panel_height       = 1.0, //in U units, converted to mm internally
     tray_thickness          = 5.0,
     rack_width              = 330,
     post_width              = 15.875,
@@ -418,14 +419,15 @@ module blank_variable_tray(
     hole_spacing            = 15.875,
     front_panel_undersizing = 0.1,
     front_panel_edge_radius = 2.0,
-    tray_post_clearance     = 0.5,
+    tray_post_clearance     = 0.5, //0.5mm clearance, this makes 1mm total tray clearance. adjust as needed.
     post_slide_width        = 3.0,
     post_slide_cutout       = 3.2,
     hole_clearance          = 0.3
 ) {
-    tray_height      = max((u_height * tray_u_size) - 1, post_slide_cutout - hole_clearance);
-    tray_depth       = max(rack_width * tray_depth_scale, 0.01);
-    back_panel_depth = min(back_panel_thickness, tray_depth);
+    tray_height           = max((u_height * tray_u_size) - 1, post_slide_cutout - hole_clearance);
+    tray_depth            = max(rack_width * tray_depth_scale, 0.01);
+    back_panel_depth      = min(back_panel_thickness, tray_depth);
+    back_panel_height_mm  = max((u_height * back_panel_height) - 1, post_slide_cutout - hole_clearance);
     tray_x0          = post_width + tray_post_clearance + post_slide_width;
     tray_w           = (rack_width - (post_width * 2)) - (tray_post_clearance * 2) - (post_slide_width * 2);
 
@@ -489,9 +491,9 @@ module blank_variable_tray(
     );
 
     if (back_panel == 1) {
-        // Rear wall to connect side panels, matching tray side height.
+        // Rear wall to connect side panels; height controlled by back_panel_height (in U).
         translate([tray_x0, front_panel_thickness + tray_depth - back_panel_depth, 0]) {
-            cube([tray_w, back_panel_depth, tray_height]);
+            cube([tray_w, back_panel_depth, back_panel_height_mm]);
         }
     }
 

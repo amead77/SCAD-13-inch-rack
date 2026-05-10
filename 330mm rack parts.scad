@@ -7,6 +7,8 @@
 // 330mm / 13 inch rack parts. This is for larger format printers, such as Creality K2 plus, Prusa XL etc
 // This is 330mm from the left edge of the left post, to the right edge of the right post, assuming single posts.
 //
+// THERE IS NOT REQUIREMENT FOR IT TO BE 330mm. You can override all of the defaults.
+//
 // I designed this specifically to allow the rear of the tray to slide into the post.
 // This is for added support on the rear, and because other designs with front and rear attachment
 // required dismantling the rack to take out a tray with front and rear attachments.
@@ -33,7 +35,7 @@
 /**
 //next 2 lines used only by my 'on save' script. can be ignored otherwise.
 //AUTO-V
-version = "v0.1-2026/05/10r13";
+version = "v0.1-2026/05/10r33";
 **/
 
 include <330mm rack posts.scad>;
@@ -54,7 +56,7 @@ part = "assembly"; // [assembly, post, base joiner, top joiner, 1U tray, 2U tray
 post_u_height = 6; 
 
 // 1 for double wide, 0 for single wide.
-post_doublewide = 0; // [0, 1]
+post_doublewide = 1; // [0, 1]
 
 //0 = none, 1 = left, 2 = right, 3 = both.
 slide_side = 0; 
@@ -123,10 +125,10 @@ tray_back_panel = 0;
 tray_y = 0.99;
 
 //this is just for the assembly demo. has no other function other than to show a tray partially slid out.
-tray_slide_out = 60; 
+tray_slide_out = 150; 
 
 //this is how many supports the base and top joins have. you can have more than just the 4 corners.
-base_support_count = 2;
+base_support_count = 3;
 
 // the top beam for connecting 2 posts/rails together, front to rear.
 header_top_beam_thickness = 10.0;
@@ -272,12 +274,12 @@ module assembly() {
                 //blank_1U_tray(tray_side_height, front_panel_edge_radius, front_panel_hole_count);
             }
         }
-        translate([0, -front_panel_thickness-tray_slide_out, u_height]) {
+        translate([0, -(front_panel_thickness+tray_slide_out), u_height]) {
         //    blank_1U_front_panel(holes = 3);
         //}
-            color("red") {
-                blank_1U_tray(tray_side_height, front_panel_edge_radius, front_panel_hole_count);
-            }
+            //color("red") {
+            rpi5_tray();
+            //}
         }
         translate([0, -front_panel_thickness, u_height * 2]) {
         //    blank_1U_front_panel(holes = 3);

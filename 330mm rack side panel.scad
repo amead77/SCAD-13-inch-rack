@@ -9,7 +9,7 @@ this is why double wide posts are useful, as the normal panels use the inner hol
 /*
 //next 2 lines used only by my 'on save' script. can be ignored otherwise.
 //AUTO-V
-version = "v0.1-2026/05/10r36";
+version = "v0.1-2026/05/10r89";
 */
 
 
@@ -53,13 +53,14 @@ c_front_panel_edge_radius = 2.0; //mm radius for front panel edges. set to 0 for
 
 
 //pattern for the side panel. not required.
-c_pattern = "honeycomb"; // [none, honeycomb, circles, squares, slots]
+c_pattern = "slots"; // [none, honeycomb, circles, squares, slots]
 c_pattern_margin = 20; //the margin front the edges of the panel for the pattern to sit within
 c_pattern_hole_dia = 20;
-c_pattern_offset_y = 1;
-c_pattern_offset_z = 1;
+c_pattern_offset_y = 4;
+c_pattern_offset_z = 0.5;
 c_pattern_edge_offset_left = 1; //these are the edges that get chopped when offsetting the pattern.
 c_pattern_edge_offset_bottom = 1; //set to zero to reverse the offset, so the pattern is chopped at the top and right instead of the bottom and left. this is because the pattern is generated starting from the bottom left corner, so the bottom and left edges are more likely to be chopped when offsetting.
+c_pattern_grid_layout = "offset"; // [inline, offset] used by circles/squares.
 /**
 module honeycomb(x, y, dia, wall)  {
 	// Diagram
@@ -86,15 +87,130 @@ module p_side_panel_blank() {
     }
 }
 
-module p_side_panel_honeycomb() {
+module circles_pattern(x, y, dia, wall, row_offset = false) {
+    step = dia + wall;
+    rows = ceil(y / step) + 1;
+    cols = ceil(x / step) + 1;
+
+    difference() {
+        square([x, y]);
+        for (r = [0 : rows]) {
+            y_offset = r * step;
+            row_shift = row_offset && ((r % 2) == 1) ? step / 2 : 0;
+            for (c = [0 : cols]) {
+                translate([c * step + row_shift, y_offset]) {
+                    circle(d = dia);
+                }
+            }
+        }
+    }
+}
+
+module squares_pattern(x, y, size, wall, row_offset = false) {
+    step = size + wall;
+    rows = ceil(y / step) + 1;
+    cols = ceil(x / step) + 1;
+
+    difference() {
+        square([x, y]);
+        for (r = [0 : rows]) {
+            y_offset = r * step;
+            row_shift = row_offset && ((r % 2) == 1) ? step / 2 : 0;
+            for (c = [0 : cols]) {
+                translate([c * step + row_shift, y_offset]) {
+                    square([size, size], center = true);
+                }
+            }
+        }
+    }
+}
+
+module slots_pattern(x, y, slot_length, slot_width, wall, row_offset = false, rounded = false, slot_rotation = 0) {
+    // Use axis-aligned bounds of the rotated slot so spacing is independent and predictable.
+    rot_w = abs(slot_length * cos(slot_rotation)) + abs(slot_width * sin(slot_rotation));
+    rot_h = abs(slot_length * sin(slot_rotation)) + abs(slot_width * cos(slot_rotation));
+    x_step = rot_w + wall;
+    y_step = rot_h + wall;
+    rows = ceil(y / y_step) + 1;
+    cols = ceil(x / x_step) + 1;
+
+    difference() {
+        square([x, y]);
+        for (r = [0 : rows]) {
+            y_offset = r * y_step;
+            row_shift = row_offset && ((r % 2) == 1) ? x_step / 2 : 0;
+            for (c = [0 : cols]) {
+                translate([c * x_step + row_shift, y_offset]) {
+                    rotate(slot_rotation) {
+                        //square([slot_length, slot_width], center = true);
+                        if (rounded) {
+                            hull() {
+                                translate([(-slot_length/2)-(slot_width), 0, 0]) {
+                                    circle(d = slot_width);
+                                }
+                                translate([-slot_width, 0, 0]) {
+                                    circle(d = slot_width);
+                                }
+                            }
+                        } else {
+                            square([slot_length, slot_width], center = true);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+module p_pattern_source_2d(pattern_type, width, height) {
+    if (pattern_type == "honeycomb") {
+        honeycomb(width, height, c_pattern_hole_dia, c_panel_thickness);
+    }
+    else if (pattern_type == "circles") {
+        circles_pattern(width, height, c_pattern_hole_dia, c_panel_thickness, c_pattern_grid_layout == "offset");
+    }
+    else if (pattern_type == "squares") {
+        squares_pattern(width, height, c_pattern_hole_dia, c_panel_thickness, c_pattern_grid_layout == "offset");
+    }
+    else if (pattern_type == "slots") {
+        slots_pattern(
+            width, height,
+            50, //c_pattern_slot_length, // new variable for slot length
+            15, //c_pattern_slot_width,  // new variable for slot width
+            2,
+            c_pattern_grid_layout == "offset",
+            true,
+            45 //c_pattern_slot_rotation // new variable for slot rotation
+        );
+    }
+}
+
+module p_panel_pattern_2d(pattern_type, width, height) {
+    pattern_width = width + c_pattern_offset_y;
+    pattern_height = height + c_pattern_offset_z;
+    pattern_shift_y = c_pattern_edge_offset_left ? -c_pattern_offset_y : 0;
+    pattern_shift_z = c_pattern_edge_offset_bottom ? -c_pattern_offset_z : 0;
+
+    intersection() {
+        square([width, height]);
+        translate([pattern_shift_y, pattern_shift_z]) {
+            p_pattern_source_2d(pattern_type, pattern_width, pattern_height);
+        }
+    }
+}
+
+module p_side_panel_patterned() {
+    pattern_width = c_panel_depth - (2 * c_pattern_margin);
+    pattern_height = c_panel_height - (2 * c_pattern_margin);
+
     difference() {
         p_side_panel_blank();
-        translate([0, c_panel_thickness+ c_pattern_margin, c_pattern_margin]) {
+        translate([0, c_panel_thickness + c_pattern_margin, c_pattern_margin]) {
             rotate([90, 0, 90]) {
                 difference() {
-                    cube([c_panel_depth - (2 * c_pattern_margin), c_panel_height - (2 * c_pattern_margin), c_panel_thickness]);
+                    cube([pattern_width, pattern_height, c_panel_thickness]);
                     linear_extrude(height = c_panel_thickness) {
-                            honeycomb(c_panel_depth - (2 * c_pattern_margin), c_panel_height - (2 * c_pattern_margin), c_pattern_hole_dia, c_panel_thickness);
+                        p_panel_pattern_2d(c_pattern, pattern_width, pattern_height);
                     }
                 }
             }
@@ -107,8 +223,12 @@ module p_side_panel() {
     if (c_pattern == "none") {
         p_side_panel_blank();
     }
-    else if (c_pattern == "honeycomb") {
-        p_side_panel_honeycomb();
+    else if ((c_pattern == "honeycomb") || (c_pattern == "circles") || (c_pattern == "squares") || (c_pattern == "slots")) {
+        p_side_panel_patterned();
+    }
+    else {
+        echo(str("Unknown c_pattern: ", c_pattern, ". Falling back to blank panel."));
+        p_side_panel_blank();
     }
 }
 

@@ -30,11 +30,11 @@
 
 
 
-/*
-// next 2 lines used only by my 'on save' script. can be ignored otherwise.
-// AUTO-V
-version = "v0.1-2026/05/10r02";
-*/
+/**
+//next 2 lines used only by my 'on save' script. can be ignored otherwise.
+//AUTO-V
+version = "v0.1-2026/05/10r13";
+**/
 
 include <330mm rack posts.scad>;
 include <330mm rack tray.scad>;
@@ -42,9 +42,10 @@ include <330mm rack defines.scad>; //some of these are overrode below.
 include <330mm rack custom tray 01.scad>;
 include <ugreen um106x.scad>; // switch dimensions
 include <rpi5.scad>;
+include <330mm rack side panel.scad>;
 
 // Chose the part to make, or assembly to see all
-part = "assembly"; // [assembly, post, base joiner, top joiner, 1U tray, 2U tray, variable tray, halfUpanel, 1U panel, 2U panel, variable panel, post joins, um106x, rpi5]
+part = "assembly"; // [assembly, post, base joiner, top joiner, 1U tray, 2U tray, variable tray, halfUpanel, 1U panel, 2U panel, variable panel, post joins, um106x, rpi5, side panel]
 
 
 // ** these are the basic setup for the posts.
@@ -80,6 +81,8 @@ nut_diameter = 10.0 + hole_clearance;
 //5mm for m6 ** I increased this from 5 to 6 because my screws are a bit stumpy. extra 1mm embeds it deeper. (that's what she said)
 nut_thickness = 6.0 + hole_clearance; 
 
+// set to 1 to add the side panel, 0 for no side panel. the side panel is designed to work with the double wide posts, but can be used with single wide and longer screws if you want.
+add_side_panel = 1; 
 
 // ** these are the basic setup for the front panel.
 
@@ -239,6 +242,24 @@ module assembly() {
             }
         }
 
+
+        //the side panel, use with a doublewide post OR a single wide post and longer screws.
+        if (add_side_panel == 1) {
+            if (post_doublewide == 0) {
+                translate([-c_panel_thickness, 0, 0]) {
+                    side_panel();
+                }
+            } else {
+                 translate([-(post_width+ c_panel_thickness), -c_panel_thickness, 0]) {
+                    side_panel();
+                }
+            }
+            
+        }
+
+
+
+
         // the trays. These are just for demo purposes. there is a 0.5U one, a 1U one, a 2U one and a variable one.
         // use what you want, the variable one is the better, but the hole spacing for larger sizes can be more annoying
         
@@ -380,5 +401,11 @@ if (part == "um106x") {
 if (part == "rpi5") {
     render() {
         rpi5_tray();
+    }
+}
+
+if (part == "side panel") {
+    render() {
+        side_panel();
     }
 }

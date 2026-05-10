@@ -9,7 +9,7 @@ this is why double wide posts are useful, as the normal panels use the inner hol
 /*
 //next 2 lines used only by my 'on save' script. can be ignored otherwise.
 //AUTO-V
-version = "v0.1-2026/05/10r89";
+version = "v0.1-2026/05/10r98";
 */
 
 
@@ -53,14 +53,29 @@ c_front_panel_edge_radius = 2.0; //mm radius for front panel edges. set to 0 for
 
 
 //pattern for the side panel. not required.
-c_pattern = "slots"; // [none, honeycomb, circles, squares, slots]
+c_pattern = "honeycomb"; // [none, honeycomb, circles, squares, slots]
 c_pattern_margin = 20; //the margin front the edges of the panel for the pattern to sit within
 c_pattern_hole_dia = 20;
 c_pattern_offset_y = 4;
 c_pattern_offset_z = 0.5;
-c_pattern_edge_offset_left = 1; //these are the edges that get chopped when offsetting the pattern.
+c_pattern_edge_offset_left = 1.3; //these are the edges that get chopped when offsetting the pattern.
 c_pattern_edge_offset_bottom = 1; //set to zero to reverse the offset, so the pattern is chopped at the top and right instead of the bottom and left. this is because the pattern is generated starting from the bottom left corner, so the bottom and left edges are more likely to be chopped when offsetting.
 c_pattern_grid_layout = "offset"; // [inline, offset] used by circles/squares.
+
+c_side_panel_logo = false;
+c_side_panel_logo_xpos = c_panel_depth / 2;
+c_side_panel_logo_zpos = c_panel_height / 2;
+c_side_panel_logo_shape = "square"; // [square, circle, hexagon]
+c_side_panel_logo_size = 30;
+c_side_panel_logo_import_file = ""; //svg or png or stl/3mf
+c_side_panel_logo_import_scale = 1.0; //scale for the imported logo, if using an imported file. this is a multiplier for the size of the imported logo, so 1.0 means it will be imported at its original size, 0.5 means it will be half the original size, etc.
+c_side_panel_logo_import_rotation = [0, 0, 0]; //rotation for the imported logo, if using an imported file. this is a vector of [x, y, z] rotation in degrees.
+c_side_panel_logo_xpos = c_panel_depth / 2; //x position for the logo, if not using an imported file. this is the distance from the front edge of the panel.
+c_side_panel_logo_zpos = c_panel_height / 2; //z position for the
+c_side_panel_import_mode = "cutout"; // [cutout, raised, recessed] this is how the logo is applied to the panel. cutout will subtract the logo shape from the panel, raised will add the logo shape on top of the panel, recessed will subtract the logo shape from the panel and then add it back in at a smaller size to create a recessed effect.
+
+
+
 /**
 module honeycomb(x, y, dia, wall)  {
 	// Diagram

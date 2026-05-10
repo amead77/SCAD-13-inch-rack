@@ -35,7 +35,7 @@
 /**
 //next 2 lines used only by my 'on save' script. can be ignored otherwise.
 //AUTO-V
-version = "v0.1-2026/05/10r33";
+version = "v0.1-2026/05/10r60";
 **/
 
 include <330mm rack posts.scad>;
@@ -151,21 +151,48 @@ module assembly() {
         support_count = (base_support_count < 2) ? 2 : base_support_count;
         for (i = [0:support_count-1]) {
             y_pos = i * (rack_width - post_width) / (support_count - 1);
+            is_rear_post = (i == (support_count - 1));
+            post_span_x = (post_doublewide == 1) ? (post_width * 2) : post_width;
 
             // Left-side post at this support position
             if (post_doublewide == 0) {
                 translate([0, y_pos, 0]) {
-                    rail_1u_holes(slide_side = 1, doublewide = post_doublewide, post_u_height, cones);
+                    if (is_rear_post) {
+                        // Rear posts face the opposite way so nut traps are on the rack-inside face.
+                        translate([post_span_x, post_width, 0]) {
+                            rotate([0, 0, 180]) {
+                                rail_1u_holes(slide_side = 2, doublewide = post_doublewide, post_u_height, cones);
+                            }
+                        }
+                    } else {
+                        rail_1u_holes(slide_side = 1, doublewide = post_doublewide, post_u_height, cones);
+                    }
                 }
             } else {
                 translate([-post_width, y_pos, 0]) {
-                    rail_1u_holes(slide_side = 1, doublewide = post_doublewide, post_u_height, cones);
+                    if (is_rear_post) {
+                        translate([post_span_x, post_width, 0]) {
+                            rotate([0, 0, 180]) {
+                                rail_1u_holes(slide_side = 2, doublewide = post_doublewide, post_u_height, cones);
+                            }
+                        }
+                    } else {
+                        rail_1u_holes(slide_side = 1, doublewide = post_doublewide, post_u_height, cones);
+                    }
                 }
             }
 
             // Right-side post at this support position
             translate([rack_width - post_width, y_pos, 0]) {
-                rail_1u_holes(slide_side = 2, doublewide = post_doublewide, post_u_height, cones);
+                if (is_rear_post) {
+                    translate([post_span_x, post_width, 0]) {
+                        rotate([0, 0, 180]) {
+                            rail_1u_holes(slide_side = 1, doublewide = post_doublewide, post_u_height, cones);
+                        }
+                    }
+                } else {
+                    rail_1u_holes(slide_side = 2, doublewide = post_doublewide, post_u_height, cones);
+                }
             }
         }
         //END POST CREATION
@@ -173,17 +200,19 @@ module assembly() {
         // the base joins
 
         if (base_join == 1) {
-            if (post_doublewide == 0) {
-                base_joiner(doublewide = post_doublewide, supports = base_support_count, bottom = 1, beam_thickness = footer_base_beam_thickness);
-                translate([rack_width - post_width, 0, 0]) {
+            color("blue") {
+                if (post_doublewide == 0) {
                     base_joiner(doublewide = post_doublewide, supports = base_support_count, bottom = 1, beam_thickness = footer_base_beam_thickness);
-                }
-            } else {
-                translate([-post_width, 0, 0]) {
-                    base_joiner(doublewide = post_doublewide, supports = base_support_count, bottom = 1, beam_thickness = footer_base_beam_thickness);
-                }
-                translate([rack_width - post_width, 0, 0]) {
-                    base_joiner(doublewide = post_doublewide, supports = base_support_count, bottom = 1, beam_thickness = footer_base_beam_thickness);
+                    translate([rack_width - post_width, 0, 0]) {
+                        base_joiner(doublewide = post_doublewide, supports = base_support_count, bottom = 1, beam_thickness = footer_base_beam_thickness);
+                    }
+                } else {
+                    translate([-post_width, 0, 0]) {
+                        base_joiner(doublewide = post_doublewide, supports = base_support_count, bottom = 1, beam_thickness = footer_base_beam_thickness);
+                    }
+                    translate([rack_width - post_width, 0, 0]) {
+                        base_joiner(doublewide = post_doublewide, supports = base_support_count, bottom = 1, beam_thickness = footer_base_beam_thickness);
+                    }
                 }
             }
         }
@@ -207,21 +236,23 @@ module assembly() {
         // the top joins
 
         if (top_join == 1) {
-            if (post_doublewide == 0) {
-                translate([0, 0, u_height*post_u_height]) {
-                    base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
+            color("blue") {
+                if (post_doublewide == 0) {
+                    translate([0, 0, u_height*post_u_height]) {
+                        base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
+                    }
+                    translate([rack_width - post_width, 0, u_height*post_u_height]) {
+                        base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
+                    }
+                } else {
+                    translate([-post_width, 0, u_height*post_u_height]) {
+                        base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
+                    }
+                    translate([rack_width - post_width, 0, u_height*post_u_height]) {
+                        base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
+                    }
                 }
-                translate([rack_width - post_width, 0, u_height*post_u_height]) {
-                    base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
-                }
-            } else {
-                translate([-post_width, 0, u_height*post_u_height]) {
-                    base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
-                }
-                translate([rack_width - post_width, 0, u_height*post_u_height]) {
-                    base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
-                }
-             }
+            }
         }
 
         // the top panel, to join the top of post to bracket
@@ -284,9 +315,10 @@ module assembly() {
         translate([0, -front_panel_thickness, u_height * 2]) {
         //    blank_1U_front_panel(holes = 3);
         //}
-            color("cyan") {
-                blank_1U_tray(tray_side_height, front_panel_edge_radius, front_panel_hole_count);
-            }
+            //color("cyan") {
+            //    blank_1U_tray(tray_side_height, front_panel_edge_radius, front_panel_hole_count);
+            //}
+            ug_um106x_tray(showmodel = true);
         }
         translate([0, -front_panel_thickness, u_height * 3]) {
         //    blank_1U_front_panel(holes = 3);
@@ -303,9 +335,54 @@ module assembly() {
     }
 }
 
+module assembly_info_panel() {
+    panel_w = 420;
+    panel_h = 40;
+    panel_t = 2;
+    text_t = 1;
+    text_size = 5.5;
+    text_line = 9;
+
+
+
+    color("black") {
+        translate([0, 0, 0]) {
+            rotate([0, 0, 0]) {
+                linear_extrude(height = text_t) {
+                    text("Assembly view is demo-only. Use Customizer for individual parts.", size = text_size);
+                }
+            }
+        }
+
+        translate([0, -20, 0]) {
+            rotate([0, 0, 0]) {
+                linear_extrude(height = text_t) {
+                    text("Set base_join/top_join for joiners, base_panel/top_panel for blanking panels, add_side_panel for side panel.", size = text_size);
+                }
+            }
+        }
+
+        translate([0, -40, 0]) {
+            rotate([0, 0, 0]) {
+                linear_extrude(height = text_t) {
+                    text("If using post joiners, enable header_include/footer_include so joiners can attach.", size = text_size);
+                }
+            }
+        }
+    }
+}
+
 // [assembly, post, base joiner, top joiner, 1U tray, 2U tray, variable tray, halfUpanel, 1U panel, 2U panel, variable panel]
 if (part == "assembly") {
     assembly();
+    translate([-300, -150, 0]) {
+        assembly_info_panel();
+    }
+
+    echo("The assembly view is for demonstration purposes. use the customiser to create individual parts.");
+    echo("If you want top/bottom (front to rear post joiners), set base_join and top_join to 1. If you want the front panel to be a blanking panel, set base_panel and top_panel to 1. If you want the side panel, set add_side_panel to 1.");
+    echo("Notes that if you use post joiners, you'll need to use the header_include and footer_include options to add the extra pieces to the top and bottom of the posts for the joiners to attach to.");
+
 }
 
 if (part == "post") {
@@ -396,7 +473,7 @@ if (part == "post joins") {
 
 if (part == "um106x") {
     render() {
-        ug_um106x_tray();
+        ug_um106x_tray(showmodel = false);
     }
 }
 

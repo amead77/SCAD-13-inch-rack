@@ -15,7 +15,7 @@
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/07r66";
+version = "v0.1-2026/05/10r02";
 */
 
 include <330mm blank variable tray.scad>;
@@ -54,7 +54,7 @@ ug_power_port_height = ug_height - ug_power_port_zpos; //this has been done to c
 ug_tray_fit_width = ug_width + (2* ug_tray_fit_wall_thickness)+ ug_tray_support_oversize;
 ug_tray_fit_depth = ug_depth + ug_tray_support_oversize;
 ug_tray_fit_height = ug_height / 3;
-ug_tray_fit_height_rear = ug_height / 2;
+ug_tray_fit_height_rear = ug_height / 2.5;
 
 //the front panel cutout for the switch. 4mm = 2mm all round. this is so the switch cannot pull out the front of the tray.
 ug_tray_cutout_width = ug_width - 4.0;
@@ -150,7 +150,7 @@ module tray_assembly() {
 
 }
 
-module ug_um106x_tray() {
+module ug_um106x_tray(showmodel = true) {
     render() {
         difference() { //1
             union() {
@@ -179,7 +179,9 @@ module ug_um106x_tray() {
                 //*************************************************************************
                 translate([32, ug_tray_front_panel_thickness, ug_tray_thickness]) { 
                     // *** COMMENT OUT THE NEXT LINE TO VIEW THE TRAY WITHOUT THE SWITCH MODEL. ALSO FOR PRINTING ***
-                    //ug_um106x();
+                    if (showmodel) {
+                        ug_um106x();
+                    }
                 }
             } //union
 
@@ -187,6 +189,12 @@ module ug_um106x_tray() {
                 keystone_panel();
             }
         } //difference 1
+        if (showmodel) {
+            translate([ug_tray_keystone_panel_x+7, ug_tray_front_panel_thickness-3.0, ug_tray_keystone_panel_z+1]) {
+                keystone_panel();
+            }
+
+        }
 
     }
 }

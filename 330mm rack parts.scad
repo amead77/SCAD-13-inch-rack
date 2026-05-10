@@ -35,7 +35,7 @@
 /**
 //next 2 lines used only by my 'on save' script. can be ignored otherwise.
 //AUTO-V
-version = "v0.1-2026/05/10r60";
+version = "v0.1-2026/05/10r71";
 **/
 
 include <330mm rack posts.scad>;
@@ -142,6 +142,57 @@ top_join = 1;
 base_panel = 1; //a blanking panel and reinforcement. 0.5U high
 top_panel = 1; //a blanking panel and reinforcement. 0.5U high
 
+
+module side_panel_ass() {
+/**
+module side_panel(
+    p_cv_panel_u_height = 6,
+    p_c_u_height = 44.5,
+    p_c_foot_add = 0,
+    p_c_head_add = 0,
+    p_c_panel_oversizing = 0.2,
+    p_cv_panel_depth = 330,
+    p_c_panel_thickness = 3,
+    p_c_lip_thickness = 3,
+    p_c_hole_clearance = 0.2,
+    p_cv_post_width = 15.875,
+    p_c_hole_offset_z = 12.7,
+    p_c_hole_spacing = 15.875,
+    p_c_front_panel_edge_radius = 2.0,
+
+    p_c_pattern = "honeycomb",
+    p_c_pattern_margin = 20,
+    p_c_pattern_hole_dia = 20,
+    p_c_pattern_offset_y = 4,
+    p_c_pattern_offset_z = 0.5,
+    p_c_pattern_edge_offset_left = 1.3,
+    p_c_pattern_edge_offset_bottom = 1,
+    p_c_pattern_grid_layout = "offset",
+    p_c_pattern_slot_length = 50,
+    p_c_pattern_slot_width = 15,
+    p_c_pattern_slot_wall = 2,
+    p_c_pattern_slot_rounded = true,
+    p_c_pattern_slot_rotation = 45,
+
+    p_c_side_panel_logo = false,
+    p_c_side_panel_logo_shape = "hexagon",
+    p_c_side_panel_logo_rotation = 60,
+    p_c_side_panel_logo_size = 100,
+    p_c_side_panel_logo_import_file = "",
+    p_c_side_panel_logo_import_width = 40,
+    p_c_side_panel_logo_import_height = 50,
+    p_c_side_panel_logo_import_rotation = [0, 0, 90],
+    p_c_side_panel_logo_import_ypos = 160,
+    p_c_side_panel_logo_import_zpos = 135,
+    p_c_side_panel_logo_ypos = -1,
+    p_c_side_panel_logo_zpos = -1,
+    p_c_side_panel_import_mode = "recessed",
+    p_c_side_panel_logo_depth = 1.0
+) {
+**/
+
+    side_panel(p_c_pattern_hole_dia = 50, p_c_side_panel_logo = true, p_c_side_panel_logo_import_file = "raspberry-pi.svg", p_c_side_panel_logo_depth = 0.01);
+}
 
 module assembly() {
 // this is used to render/see all the bits together, as an example.
@@ -280,11 +331,11 @@ module assembly() {
         if (add_side_panel == 1) {
             if (post_doublewide == 0) {
                 translate([-c_panel_thickness, 0, 0]) {
-                    side_panel();
+                    side_panel_ass();
                 }
             } else {
                  translate([-(post_width+ c_panel_thickness), -c_panel_thickness, 0]) {
-                    side_panel();
+                    side_panel_ass();
                 }
             }
             
@@ -485,6 +536,7 @@ if (part == "rpi5") {
 
 if (part == "side panel") {
     render() {
-        side_panel();
+        side_panel(p_c_pattern_hole_dia = 50, p_c_side_panel_logo = true, p_c_side_panel_logo_import_file = "raspberry-pi.svg", p_c_side_panel_logo_depth = 0.01);
+        //side_panel();
     }
 }

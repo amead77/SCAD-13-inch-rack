@@ -1,7 +1,7 @@
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/15r03";
+version = "v0.1-2026/05/15r06";
 */
 
 // Standalone defaults are defined in each module signature.
@@ -524,6 +524,7 @@ module base_joiner(
     beam_thickness = 5.0,
     post_width = 15.875,
     rack_width = 330,
+    rack_depth = 330,
     footer_height = 12.7,
     header_height = 12.7,
     hole_offset_z = 12.7,
@@ -543,6 +544,7 @@ module base_joiner(
             beam_thickness = beam_thickness,
             post_width = post_width,
             rack_width = rack_width,
+            //rack_depth = rack_depth,
             footer_height = footer_height,
             hole_offset_z = hole_offset_z,
             hole_d = hole_d,
@@ -563,6 +565,7 @@ module base_joiner(
                     beam_thickness = beam_thickness,
                     post_width = post_width,
                     rack_width = rack_width,
+                    //rack_depth = rack_depth,
                     footer_height = footer_height,
                     hole_offset_z = hole_offset_z,
                     hole_d = hole_d,
@@ -584,22 +587,22 @@ module base_joiner(
                 }
             }
 
-            translate([post_width / 2, rack_width - post_width / 2, header_height]) {
+            translate([post_width / 2, rack_depth - post_width / 2, header_height]) {
                 cylinder(h = post_cone_height - post_top_cone_clearance, r1 = (post_cone_base_diameter / 2), r2 = (post_cone_top_diameter / 2), center = false, $fn = 32);
             }
             if (doublewide == 1) {
-                translate([post_width + post_width / 2, rack_width - post_width / 2, header_height]) {
+                translate([post_width + post_width / 2, rack_depth - post_width / 2, header_height]) {
                     cylinder(h = post_cone_height - post_top_cone_clearance, r1 = (post_cone_base_diameter / 2), r2 = (post_cone_top_diameter / 2), center = false, $fn = 32);
                 }
             }
 
             if (supports > 2) {
                 for (i = [1:supports - 2]) {
-                    translate([post_width / 2, i * (rack_width - post_width) / (supports - 1) + post_width / 2, header_height]) {
+                    translate([post_width / 2, i * (rack_depth - post_width) / (supports - 1) + post_width / 2, header_height]) {
                         cylinder(h = post_cone_height - post_top_cone_clearance, r1 = (post_cone_base_diameter / 2), r2 = (post_cone_top_diameter / 2), center = false, $fn = 32);
                     }
                     if (doublewide == 1) {
-                        translate([post_width + post_width / 2, i * (rack_width - post_width) / (supports - 1) + post_width / 2, header_height]) {
+                        translate([post_width + post_width / 2, i * (rack_depth - post_width) / (supports - 1) + post_width / 2, header_height]) {
                             cylinder(h = post_cone_height - post_top_cone_clearance, r1 = (post_cone_base_diameter / 2), r2 = (post_cone_top_diameter / 2), center = false, $fn = 32);
                         }
                     }
@@ -830,7 +833,7 @@ module nut_holes(
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/15r03";
+version = "v0.1-2026/05/15r06";
 */
 
 

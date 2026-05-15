@@ -1,7 +1,7 @@
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/05r14";
+version = "v0.1-2026/05/15r00";
 */
 
 
@@ -261,6 +261,9 @@ module post_base_join_panel(
     }
 }
 
+
+
+/**
 
 // side_slide(...)
 // Internal helper — builds the 1U tray side wall and slide tabs.
@@ -603,3 +606,4 @@ module blank_2U_tray(
         front_panel_thickness = front_panel_thickness
     );
 }
+**/

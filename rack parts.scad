@@ -35,7 +35,7 @@
 /**
 //next 2 lines used only by my 'on save' script. can be ignored otherwise.
 //AUTO-V
-version = "v0.1-2026/05/15r24";
+version = "v0.1-2026/05/15r35";
 **/
 
 include <rack posts.scad>;
@@ -103,6 +103,7 @@ add_side_panel = 1;
 //rack depth
 rack_depth = 330.0;
 
+//rack width, bear in mind this is outer edge of left post to outer edge of right post, so if you are using double wide posts, or your posts are wider than 15.875mm, you will need to increase this to ensure the trays fit properly. also, if you are using a lot of clearance in the trays, you might need to increase this to ensure the trays fit properly.
 rack_width = 350;
 
 
@@ -395,7 +396,8 @@ module assembly() {
         //    blank_1U_front_panel(holes = 3);
         //}
             color("orange") {
-                blank_2U_tray(rack_width = rack_width, tray_side_height, front_panel_edge_radius, front_panel_hole_count);
+                blank_variable_tray(panel_u_size = 2, tray_u_size = 1.5, holes = 4, back_panel = 1, rack_width = rack_width, rack_depth = rack_depth);
+                //blank_2U_tray(rack_width = rack_width, tray_side_height, front_panel_edge_radius, front_panel_hole_count, rack_depth = rack_depth);
             }
         }
 //        translate([0, -front_panel_thickness, u_height * 5]) {
@@ -477,10 +479,10 @@ if (part == "base joiner") {
 if (part == "top joiner") {
     render() {
         if (post_doublewide == 0) {
-            base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
+            base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness, rack_depth = rack_depth);
         } else {
             translate([-post_width, 0, 0]) {
-                base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness);
+                base_joiner(doublewide = post_doublewide, bottom = 0, supports = base_support_count, beam_thickness = header_top_beam_thickness, rack_depth = rack_depth);
             }
         }
     }
@@ -508,25 +510,25 @@ if (part == "variable tray") {
     
 if (part == "halfUpanel") {
     color("orange") {
-        blank_05U_front_panel();
+        blank_05U_front_panel(rack_width = rack_width);
     }
 }
 
 if (part == "1U panel") {
     color("orange") {
-        blank_1U_front_panel(holes = front_panel_hole_count);
+        blank_1U_front_panel(holes = front_panel_hole_count, rack_width = rack_width);
     }
 }
 
 if (part == "2U panel") {
     color("orange") {
-        blank_2U_front_panel(holes = front_panel_hole_count);
+        blank_2U_front_panel(holes = front_panel_hole_count, rack_width = rack_width);
     }
 }
 
 if (part == "variable panel") {
     color("orange") {
-        blank_variable_front_panel(u_size = front_panel_height, holes = front_panel_hole_count);
+        blank_variable_front_panel(u_size = front_panel_height, holes = front_panel_hole_count, rack_width = rack_width);
     }
 }
 
@@ -544,7 +546,7 @@ if (part == "post joins") {
 
 if (part == "um106x") {
     render() {
-        ug_um106x_tray(showmodel = false);
+        ug_um106x_tray(showmodel = false, rack_width = rack_width);
     }
 }
 

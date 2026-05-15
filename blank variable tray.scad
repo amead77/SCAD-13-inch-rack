@@ -25,7 +25,7 @@
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/15r03";
+version = "v0.1-2026/05/15r04";
 */
 
 function variable_holes_per_u(holes) = (holes >= 6) ? 3 : ((holes >= 4) ? 2 : holes);
@@ -424,6 +424,7 @@ module blank_variable_tray(
     back_panel_height       = 1.0, //in U units, converted to mm internally
     tray_thickness          = 5.0, //thickness of the tray base in mm.
     rack_width              = 330, //this is the external width of the rack, if single-width, using this and post_width is what determines the panel and tray widths and depths.
+    rack_depth              = 330, //this can be different than the width
     post_width              = 15.875, //a normal single-width rack. If using double-width and/or sliders, this will be wider, but calculated automatically based on this.
     hole_d                  = 6.4, //holes sized for m6 screws, but slightly oversized for clearance.
     u_height                = 44.5, //standard U height in mm.
@@ -438,7 +439,7 @@ module blank_variable_tray(
 ) {
     tray_u_size_resolved  = is_undef(tray_u_size) ? panel_u_size : tray_u_size;
     tray_height           = max((u_height * tray_u_size_resolved) - 1, post_slide_cutout - hole_clearance);
-    tray_depth            = max(rack_width * tray_depth_scale, 0.01);
+    tray_depth            = max(rack_depth * tray_depth_scale, 0.01);
     back_panel_depth      = min(back_panel_thickness, tray_depth);
     back_panel_height_mm  = max((u_height * back_panel_height) - 1, post_slide_cutout - hole_clearance);
     tray_x0          = post_width + tray_post_clearance + post_slide_width;

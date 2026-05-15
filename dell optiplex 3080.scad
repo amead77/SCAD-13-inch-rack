@@ -7,7 +7,7 @@
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.
 // AUTO-V
-version = "v0.1-2026/05/15r01";
+version = "v0.1-2026/05/15r38";
 */
 
 include <blank variable tray.scad>;
@@ -22,18 +22,28 @@ dell_feet_width = dell_width - 20;
 dell_feet_depth = dell_depth - 20;
 
 
-module dell_optiplex_3080() {
+module dell_optiplex_3080(posx = 0, posy = 0, posz = 0) {
     //just a basic box representing the case dimensions
-    translate([10, 10, 0]) {
+    translate([posx + 10, posy + 10, posz + 0]) {
         color("black") {
             cube([dell_feet_width, dell_feet_depth, dell_feet_height]);
         }
     }
-    translate([0, 0, dell_feet_height]) {
+    translate([posx, posy, posz + dell_feet_height]) {
         color("gray"){
             cube([dell_width, dell_depth, dell_height]);
         }
     }
+
+    //add a rim around the front of the case, have it extend out the front so it can be differenced out of the tray panel
+    translate([posx + dell_rim, posy-100, posz+dell_feet_height+dell_rim]) {
+        color("red") {
+            cube([dell_width - (2 * dell_rim), 
+                100, 
+                dell_height-(2 * dell_rim)]);
+        }
+    }
+
 }
 
 /**
@@ -78,12 +88,11 @@ module blank_variable_tray(
 
 
 module dell_tray() {
-    blank_variable_tray(rack_width = 340, panel_u_size = 3, tray_u_size = 1, tray_depth_scale = 1.0, holes = 4, back_panel = 1, back_panel_height = 0.3, back_panel_thickness = 10.0, side_support = 1, side_support_back = 100, tray_thickness = 8);
-
-
+    blank_variable_tray(rack_width = 350, rack_depth = 330, panel_u_size = 3, tray_u_size = 1, tray_depth_scale = 1.0, holes = 4, back_panel = 1, back_panel_height = 0.3, back_panel_thickness = 10.0, side_support = 1, side_support_back = 150, tray_thickness = 8);
 }
 
-translate([25, 10, 8]) {
-    dell_optiplex_3080();
+difference() {
+    dell_tray();
+    //offset slightly to the right due to side feet on the case
+    dell_optiplex_3080(posx = 34, posy = 6, posz = 8);
 }
-dell_tray();

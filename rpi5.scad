@@ -11,7 +11,7 @@ version = "v0.1-2026/05/15r04";
 rpi5_screw_hole_diameter = 2.7;
 
 
-include <330mm blank variable tray.scad>;
+include <blank variable tray.scad>;
 include <keystone panel.scad>;
 
 

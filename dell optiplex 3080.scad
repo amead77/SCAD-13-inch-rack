@@ -10,7 +10,7 @@
 version = "v0.1-2026/05/15r01";
 */
 
-include <330mm blank variable tray.scad>;
+include <blank variable tray.scad>;
 
 dell_width = 291.0;
 dell_feet_height = 3.5;

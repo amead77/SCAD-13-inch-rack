@@ -14,7 +14,7 @@ version = "v0.1-2026/05/10r173";
 
 
 include <honeycomb.scad>;
-//include <330mm rack posts.scad>;
+//include <rack posts.scad>;
 
 $fn = 32;
 

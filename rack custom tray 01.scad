@@ -1,4 +1,4 @@
-include <330mm blank variable tray.scad>;
+include <blank variable tray.scad>;
 
 /*
 // next 2 lines used only by my 'on save' script. can be ignored otherwise.

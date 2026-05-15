@@ -24,7 +24,7 @@
 // Footer/Header. These are added to the post to allow joining the front/rear posts together using the joiner. (optional)
 // Joiners. The attach to the footer/header and span the gap between front and rear posts. (optional)
 //
-// The front panels/trays can have a logo embossed/etched. This is built into the function. See the custom tray for example. "330mm rack custom tray 01.scad".
+// The front panels/trays can have a logo embossed/etched. This is built into the function. See the custom tray for example. "rack custom tray 01.scad".
 //
 // AI use notes: The variable size tray/panel is AI created. The rest was 99% me, with some help from AI when getting stuck. I should probably go through and comment my code better :S
 // AI is not good at 3d design (yet), so if you want to create custom parts using AI, at least get the basic design done by hand, then get AI to assist with bits you're stuck on.
@@ -38,13 +38,13 @@
 version = "v0.1-2026/05/15r24";
 **/
 
-include <330mm rack posts.scad>;
-include <330mm rack tray.scad>;
-//include <330mm rack defines.scad>; //some of these are overrode below.
-include <330mm rack custom tray 01.scad>;
+include <rack posts.scad>;
+include <rack tray.scad>;
+//include <rack defines.scad>; //some of these are overrode below.
+include <rack custom tray 01.scad>;
 include <ugreen um106x.scad>; // switch dimensions
 include <rpi5.scad>;
-include <330mm rack side panel.scad>;
+include <rack side panel.scad>;
 
 // Chose the part to make, or assembly to see all
 part = "assembly"; // [assembly, post, base joiner, top joiner, 1U tray, 2U tray, variable tray, halfUpanel, 1U panel, 2U panel, variable panel, post joins, um106x, rpi5, side panel]

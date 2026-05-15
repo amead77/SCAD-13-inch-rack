@@ -11,7 +11,7 @@ version = "v0.1-2026/05/15r47";
 */
 
 
-include <330mm blank variable tray.scad>;
+include <blank variable tray.scad>;
 
 $fn = 32;
 

@@ -18,7 +18,7 @@
 version = "v0.1-2026/05/15r02";
 */
 
-include <330mm blank variable tray.scad>;
+include <blank variable tray.scad>;
 include <keystone panel.scad>;
 
 ug_tray_support_oversize = 1.0; // this is how much larger the switch support is than the switch itself.

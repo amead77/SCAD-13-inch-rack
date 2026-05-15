@@ -66,13 +66,13 @@ You can have more than just 4 posts. The joiners can have 2+ supports, by increa
 
 ## Custom Trays
 
-The file `330mm rack custom tray 01.scad` provides an example of a custom tray — including IO cutouts (e.g. Raspberry Pi 5 USB/Ethernet ports), standoffs with heat-set inserts, and embossed logos. Use this as a starting point for your own designs.
+The file `rack custom tray 01.scad` provides an example of a custom tray — including IO cutouts (e.g. Raspberry Pi 5 USB/Ethernet ports), standoffs with heat-set inserts, and embossed logos. Use this as a starting point for your own designs.
 
 ---
 
 ## Usage
 
-1. Open `330mm rack parts.scad` in OpenSCAD (use the nightlys, the offical releases are mega old).
+1. Open `rack parts.scad` in OpenSCAD (use the nightlys, the offical releases are mega old).
 2. Open the **Customizer** panel (Window → Customizer).
 3. Select the part you want from the `part` dropdown:
    - `assembly` — preview all parts together
@@ -98,7 +98,7 @@ The file `330mm rack custom tray 01.scad` provides an example of a custom tray �
 
 ### Hardware
 
-The design is based on **M6 screws** with **M6 hex nuts** (10mm across-flats, 5mm thick). Adjust `hole_clearance`, `hole_d`, `nut_diameter`, and `nut_thickness` in `330mm rack defines.scad` if you want to use different fasteners.
+The design is based on **M6 screws** with **M6 hex nuts** (10mm across-flats, 5mm thick). Adjust `hole_clearance`, `hole_d`, `nut_diameter`, and `nut_thickness` in `rack defines.scad` if you want to use different fasteners.
 
 ---
 
@@ -106,12 +106,12 @@ The design is based on **M6 screws** with **M6 hex nuts** (10mm across-flats, 5m
 
 | File | Purpose |
 |---|---|
-| `330mm rack parts.scad` | Main entry point — select and configure parts here |
-| `330mm rack defines.scad` | All default dimensions and constants |
-| `330mm rack posts.scad` | Post geometry |
-| `330mm rack tray.scad` | Tray and panel geometry |
-| `330mm rack custom tray 01.scad` | Example custom tray (Raspberry Pi 5) |
-| `330mm rack *.3mf` | Pre-sliced print files for reference |
+| `rack parts.scad` | Main entry point — select and configure parts here |
+| `rack defines.scad` | All default dimensions and constants |
+| `rack posts.scad` | Post geometry |
+| `rack tray.scad` | Tray and panel geometry |
+| `rack custom tray 01.scad` | Example custom tray (Raspberry Pi 5) |
+| `rack *.3mf` | Pre-sliced print files for reference |
 
 ---
 

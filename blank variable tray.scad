@@ -1,4 +1,4 @@
-// 330mm blank variable tray.scad
+// blank variable tray.scad
 // Variable-height front panel and tray modules.
 // All rack dimensions are explicit parameters — no external defines file required.
 // Default values match the 330mm rack standard (front_panel_thickness=3, rack_width=330, etc.).

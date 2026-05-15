@@ -2,9 +2,9 @@
 
 ---
 
-## Definitions (`330mm rack defines.scad`)
+## Definitions (`rack defines.scad`)
 
-These are the global defaults. Many can be overridden in `330mm rack parts.scad` or passed directly as function parameters.
+These are the global defaults. Many can be overridden in `rack parts.scad` or passed directly as function parameters.
 
 ### Rack geometry
 
@@ -84,7 +84,7 @@ These are the global defaults. Many can be overridden in `330mm rack parts.scad`
 
 ## Public Modules
 
-### `330mm rack posts.scad`
+### `rack posts.scad`
 
 ---
 
@@ -134,7 +134,7 @@ base_joiner(doublewide=1, supports=3, beam_thickness=6);
 
 ---
 
-### `330mm rack tray.scad`
+### `rack tray.scad`
 
 ---
 
@@ -285,7 +285,7 @@ post_base_join_panel(doublewide=1, thickness=4);
 
 ---
 
-### `330mm rack custom tray 01.scad`
+### `rack custom tray 01.scad`
 
 ---
 
@@ -344,7 +344,7 @@ custom_tray_01();
 
 ---
 
-## Assembly (`330mm rack parts.scad`)
+## Assembly (`rack parts.scad`)
 
 The `part` variable at the top of this file selects what to render. Set it in the OpenSCAD Customiser or edit directly.
 
